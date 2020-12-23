@@ -67,7 +67,7 @@ regressor.fit(X, y)
 Plots<br>
 [![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)
 
-Random Preidctions
+Random Predctions
 ```python
 150K (Angers)
 Predict: [12.70672805]
