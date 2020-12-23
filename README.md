@@ -25,10 +25,10 @@ slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
 y_pred = regressor.predict(X_test)
 ```
 
-Train test predictions
+Train test predictions<br>
 [![skl1.png](https://i.postimg.cc/N0xs8pP7/skl1.png)](https://postimg.cc/JyGCMc8G)
 
-Test test predictions
+Test test predictions<br>
 [![skl2.png](https://i.postimg.cc/fLrh5F7X/skl2.png)](https://postimg.cc/5YLG2sRN)
 
 ## Compare Two Regressors
