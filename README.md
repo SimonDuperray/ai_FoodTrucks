@@ -1,5 +1,27 @@
 # Profit Prediction Using Linear Regression
 
+- [Profit Prediction Using Linear Regression](#profit-prediction-using-linear-regression)
+  - [Problem](#problem)
+- [Linear Regression Model](#linear-regression-model)
+  - [Scipy](#scipy)
+  - [Sklearn](#sklearn)
+  - [Compare Two Regressors](#compare-two-regressors)
+- [Support Vector Machine Model](#support-vector-machine-model)
+  - [Plots](#plots)
+  - [R2 Score](#r2-score)
+  - [Random Predictions](#random-predictions)
+- [Polynomial Regression Model](#polynomial-regression-model)
+  - [Plots](#plots-1)
+  - [R2 Score](#r2-score-1)
+  - [Random Predictions](#random-predictions-1)
+- [Decision Trees Model](#decision-trees-model)
+  - [Plots](#plots-2)
+  - [R2 Score](#r2-score-2)
+- [Random Forests Model](#random-forests-model)
+  - [Plots](#plots-3)
+  - [R2 Score](#r2-score-3)
+- [Conclusion](#conclusion)
+
 ## Problem
 Suppose you are the CEO of a Food Trucks franchise. You are considering different cities to open a new point of sale. The chain already has trucks in different cities and you have data for the city's profits and populations.
 You want to use this data to help you choose the city to open a new point of sale.
@@ -7,10 +29,6 @@ You want to use this data to help you choose the city to open a new point of sal
 [![dataset.png](https://i.postimg.cc/4yB2BTbQ/dataset.png)](https://postimg.cc/fSSvRpPV)
 
 [![plot.png](https://i.postimg.cc/wBXVwp9R/plot.png)](https://postimg.cc/p9dzd3hP)
-
-## Plan
-* Get predictions using scipy library
-* Get predictions using sklearn library
   
 # Linear Regression Model
 
@@ -65,19 +83,18 @@ from sklearn.svm import SVR
 regressor = SVR(kernel="rbf")
 regressor.fit(X, y)
 ```
-## Observe Predictions
 
-Plots<br>
+## Plots
 [![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)
 
-R2 Score
+## R2 Score
 ```python
 print(r2_score(sc_y.inverse_transform(y), sc_y.inverse_transform(regressor.predict(sc_X.transform(sc_X.inverse_transform(X))))))
 ==============================================================================
 r2 = 0.6931820237472561
 ```
 
-Random Predictions
+## Random Predictions
 ```python
 150K (Angers)
 Predict: [12.70672805]
@@ -93,19 +110,18 @@ X_poly4 = poly_reg4.fit_transform(X)
 lin_reg4 = LinearRegression()
 lin_reg4.fit(X_poly4, y)
 ```
-## Observe Predictions
 
-Plots<br>
+## Plots
 [![polyyyyy.png](https://i.postimg.cc/vTmKP1JD/polyyyyy.png)](https://postimg.cc/R6jGh0Vz)
 
-R2 Score
+## R2 Score
 ```python
 print(r2_score(y, lin_reg.predict(X)))
 ==========================================
 r2 = 0.7020315537841397
 ```
 
-Random Predictions
+## Random Predictions
 ```python
 150K (Angers)
 Predict lin: [[12.56809849]]
@@ -123,10 +139,10 @@ regressor = DecisionTreeRegressor(random_state=0)
 regressor.fit(X, y)
 ```
 
-Plots<br>
+## Plots
 [![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)
 
-R2 Score
+## R2 Score
 ```python
 print(r2_score(y, regressor.predict(X)))
 ===========================================
@@ -140,10 +156,10 @@ regressor = RandomForestRegressor(n_estimators=10, random_state=0)
 regressor.fit(X, y)
 ```
 
-Plots<br>
+## Plots
 [![rnadom.png](https://i.postimg.cc/qBnQTxL0/rnadom.png)](https://postimg.cc/w3qD5JZb)
 
-R2 Score
+## R2 Score
 ```python
 print(r2_score(y, regressor.predict(X)))
 ===========================================
