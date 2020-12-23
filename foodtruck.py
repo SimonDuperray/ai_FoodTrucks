@@ -40,7 +40,7 @@ def predict(X):
 
 axes = plt.axes()
 axes.grid()
-plt.title("Predictions")
+plt.title(" Scipy Predictions")
 plt.plot(X, predict(X), c='r')
 plt.scatter(X, y, c='b')
 plt.xlabel('Population (10k)')
@@ -62,15 +62,19 @@ regressor.fit(X_train, y_train)
 
 y_pred = regressor.predict(X_test)
 
-plt.scatter(X_train, y_train, color='red')
-plt.plot(X_train, regressor.predict(X_train), color='blue')
-plt.title("SKL Regression - Train")
+axes = plt.axes()
+axes.grid()
+plt.scatter(X_train, y_train, color='blue')
+plt.plot(X_train, regressor.predict(X_train), color='red')
+plt.title("SKL Regression - Train set")
 plt.xlabel("Population (10k)")
 plt.ylabel('Profit (10k)')
 plt.show()
 
-plt.scatter(X_test, y_test, color='red')
-plt.plot(X_test, y_pred, color='blue')
+axes = plt.axes()
+axes.grid()
+plt.scatter(X_test, y_test, color='blue')
+plt.plot(X_test, y_pred, color='red')
 plt.title("SKL Regression - Test set")
 plt.xlabel("Population (10k)")
 plt.ylabel('Profit (10k)')
@@ -81,8 +85,15 @@ plt.show()
 <h3>Plots</h3>
 """
 
-plt.scatter(X_test, y_pred, c='b')
-plt.scatter(X_test, predict(X_test), c='r')
+axes = plt.axes()
+axes.grid()
+plt.title('Scipy vs Sklearn results')
+plt.plot(X_test, y_pred, c='b', label="sklearn")
+plt.plot(X_test, predict(X_test), c='r', label="scipy")
+plt.xlabel("Population (10k)")
+plt.ylabel('Profit (10k)')
+plt.legend(loc="lower right")
+plt.show()
 
 """<h3>R2 Scores</h3>"""
 
@@ -108,7 +119,7 @@ print("Delta = "+str(np.abs(predict(200.15)-regressor.predict(paris).reshape(1,)
 
 marseille = np.array([86.3])
 marseille = marseille.reshape(marseille.shape[0], 1)
-print("Paris")
+print("Marseille")
 print("Scipy: ["+str(predict(86.3))+"]")
 print("SkLearn: "+str(regressor.predict(marseille).reshape(1,)))
 print("Delta = "+str(np.abs(predict(86.3)-regressor.predict(marseille).reshape(1,))))
