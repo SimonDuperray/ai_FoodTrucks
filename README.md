@@ -38,8 +38,11 @@ Plots<br>
 
 R2_scores
 ```python
-Scipy: 0.8378732325263409
-SKLearn: 0.7221737943890659
+print("Scipy: "+str(r_value))
+print("SKLearn: "+str(r2_score(y_train, regressor.predict(X_train))))
+==========================================================================
+Scipy: r2 = 0.8378732325263409
+SKLearn: r2 = 0.7221737943890659
 ```
 
 Random Predictions
@@ -62,10 +65,17 @@ from sklearn.svm import SVR
 regressor = SVR(kernel="rbf")
 regressor.fit(X, y)
 ```
-## Observe predictions
+## Observe Predictions
 
 Plots<br>
 [![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)
+
+R2 Score
+```python
+print(r2_score(sc_y.inverse_transform(y), sc_y.inverse_transform(regressor.predict(sc_X.transform(sc_X.inverse_transform(X))))))
+==============================================================================
+r2 = 0.6931820237472561
+```
 
 Random Predictions
 ```python
@@ -75,3 +85,77 @@ Predict: [12.70672805]
 215K (Rennes)
 Predict: [20.49885932]
 ```
+# Polynomial Regression Model
+```python
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg4 = PolynomialFeatures(degree=4)
+X_poly4 = poly_reg4.fit_transform(X)
+lin_reg4 = LinearRegression()
+lin_reg4.fit(X_poly4, y)
+```
+## Observe Predictions
+
+Plots<br>
+[![polyyyyy.png](https://i.postimg.cc/vTmKP1JD/polyyyyy.png)](https://postimg.cc/R6jGh0Vz)
+
+R2 Score
+```python
+print(r2_score(y, lin_reg.predict(X)))
+==========================================
+r2 = 0.7020315537841397
+```
+
+Random Predictions
+```python
+150K (Angers)
+Predict lin: [[12.56809849]]
+Predict poly: [[1.0000e+00 1.5000e+01 2.2500e+02 3.3750e+03 5.0625e+04]]
+=============================
+215K (Rennes)
+Predict lin: [[17.59533788]]
+Predict poly: [[1.00000e+00 2.10000e+01 4.41000e+02 9.26100e+03 1.94481e+05]]
+```
+
+# Decision Trees Model
+```python
+from sklearn.tree import DecisionTreeRegressor
+regressor = DecisionTreeRegressor(random_state=0)
+regressor.fit(X, y)
+```
+
+Plots<br>
+[![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)
+
+R2 Score
+```python
+print(r2_score(y, regressor.predict(X)))
+===========================================
+r2 = 1 # ??
+```
+
+# Random Forests Model
+```python
+from sklearn.ensemble import RandomForestRegressor
+regressor = RandomForestRegressor(n_estimators=10, random_state=0)
+regressor.fit(X, y)
+```
+
+Plots<br>
+[![rnadom.png](https://i.postimg.cc/qBnQTxL0/rnadom.png)](https://postimg.cc/w3qD5JZb)
+
+R2 Score
+```python
+print(r2_score(y, regressor.predict(X)))
+===========================================
+r2 = 0.9302612028627444
+```
+
+# Conclusion
+|    | Linear | Polynomial | SVM | Decision Tree | Random Forest |
+|-------|---------|------------|-----|---------------|---------------|
+|r2score|0.84|0.70|0.69|X|0.93|
+|model|[![skl1.png](https://i.postimg.cc/N0xs8pP7/skl1.png)](https://postimg.cc/JyGCMc8G)|[![polyyyyy.png](https://i.postimg.cc/vTmKP1JD/polyyyyy.png)](https://postimg.cc/R6jGh0Vz)|[![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)|[![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)|[![rnadom.png](https://i.postimg.cc/qBnQTxL0/rnadom.png)](https://postimg.cc/w3qD5JZb)|
+
+I found r2=1 for the decision tree algorithm, so I preferred not to take it into account.
+
+The best model is the <b>random forest algorithm</b>, it has <b>0.93</b> of precision.
