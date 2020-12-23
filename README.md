@@ -44,18 +44,34 @@ SKLearn: 0.7221737943890659
 
 Random Predictions
 ```python
-Angers
-Scipy: [14.357633877788937]
-SkLearn: [14.12309067]
-Delta = [0.23454321]
+150K (Angers)
+Scipy: [13.999723784532057]
+SkLearn: [13.772103]
+Delta = [0.22762078]
 =============================
-Paris
-Scipy: [234.88990300623541]
-SkLearn: [230.38999145]
-Delta = [4.49991156]
+215K (Rennes)
+Scipy: [21.15792564966962]
+SkLearn: [20.79185634]
+Delta = [0.36606931]
+```
+
+# Support Vector Machine Model
+
+```python
+from sklearn.svm import SVR
+regressor = SVR(kernel="rbf")
+regressor.fit(X, y)
+```
+## Observe predictions
+
+Plots<br>
+[![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)
+
+Random Preidctions
+```python
+150K (Angers)
+Predict: [12.70672805]
 =============================
-Marseille
-Scipy: [99.06302261525012]
-SkLearn: [97.19017184]
-Delta = [1.87285077]
+215K (Rennes)
+Predict: [20.49885932]
 ```

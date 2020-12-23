@@ -30,7 +30,10 @@ plt.xlabel("Population (10k)")
 plt.ylabel("Profit (10k)")
 plt.show()
 
-"""<h2>Scipy Regression</h2>"""
+"""# Linear Regression Model
+
+<h2>Scipy Regression</h2>
+"""
 
 from scipy import stats
 slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
@@ -103,23 +106,47 @@ print("SKLearn: "+str(r2_score(y_train, regressor.predict(X_train))))
 
 """<h3>Random Predictions</h3>"""
 
-angers = np.array([15.3])
+angers = np.array([15])
 angers = angers.reshape(angers.shape[0], 1)
-print("Angers")
-print("Scipy: ["+str(predict(15.3))+"]")
+print("150K (Angers)")
+print("Scipy: ["+str(predict(15))+"]")
 print("SkLearn: "+str(regressor.predict(angers).reshape(1,)))
-print("Delta = "+str(np.abs(predict(15.3)-regressor.predict(angers).reshape(1,))))
+print("Delta = "+str(np.abs(predict(15)-regressor.predict(angers).reshape(1,))))
 
-paris = np.array([200.15])
-paris = paris.reshape(paris.shape[0], 1)
-print("Paris")
-print("Scipy: ["+str(predict(200.15))+"]")
-print("SkLearn: "+str(regressor.predict(paris).reshape(1,)))
-print("Delta = "+str(np.abs(predict(200.15)-regressor.predict(paris).reshape(1,))))
+rennes = np.array([21])
+rennes = rennes.reshape(rennes.shape[0], 1)
+print("215K (Rennes)")
+print("Scipy: ["+str(predict(21))+"]")
+print("SkLearn: "+str(regressor.predict(rennes).reshape(1,)))
+print("Delta = "+str(np.abs(predict(21)-regressor.predict(rennes).reshape(1,))))
 
-marseille = np.array([86.3])
-marseille = marseille.reshape(marseille.shape[0], 1)
-print("Marseille")
-print("Scipy: ["+str(predict(86.3))+"]")
-print("SkLearn: "+str(regressor.predict(marseille).reshape(1,)))
-print("Delta = "+str(np.abs(predict(86.3)-regressor.predict(marseille).reshape(1,))))
+"""# Support Vector Machine Model"""
+
+from sklearn.preprocessing import StandardScaler
+sc_X = StandardScaler()
+sc_y = StandardScaler()
+X = sc_X.fit_transform(X)
+y = sc_y.fit_transform(y)
+
+from sklearn.svm import SVR
+regressor = SVR(kernel="rbf")
+regressor.fit(X, y)
+
+"""<h2>Observations</h2>"""
+
+X_grid = np.arange(min(sc_X.inverse_transform(X)), max(sc_X.inverse_transform(X)), 0.1)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
+plt.plot(X_grid, sc_y.inverse_transform(regressor.predict(sc_X.transform(X_grid))), color = 'blue')
+plt.title('SVM Model')
+plt.xlabel('Population (10k)')
+plt.ylabel('Profit (10k)')
+plt.show()
+
+"""<h2>Random Predictions</h2>"""
+
+print('150K (Angers)')
+print("Predict: "+str(sc_y.inverse_transform(regressor.predict(sc_X.transform([[15]])))))
+
+print('215K (Rennes)')
+print("Predict: "+str(sc_y.inverse_transform(regressor.predict(sc_X.transform([[21]])))))
