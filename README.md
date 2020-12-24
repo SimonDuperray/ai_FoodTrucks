@@ -1,6 +1,6 @@
-# Profit Prediction Using Linear Regression
+# Profit Prediction Using Regression & Machine Learning
 
-- [Profit Prediction Using Linear Regression](#profit-prediction-using-linear-regression)
+- [Profit Prediction Using Regression & Machine Learning](#profit-prediction-using-regression--machine-learning)
   - [Problem](#problem)
 - [Linear Regression Model](#linear-regression-model)
   - [Scipy](#scipy)
