@@ -134,6 +134,8 @@ regressor.fit(X, y)
 
 """## Model Plot"""
 
+axes = plt.axes()
+axes.grid()
 X_grid = np.arange(min(sc_X.inverse_transform(X)), max(sc_X.inverse_transform(X)), 0.1)
 X_grid = X_grid.reshape((len(X_grid), 1))
 plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
@@ -168,6 +170,8 @@ lin_reg4.fit(X_poly4, y)
 
 """## Model plot"""
 
+axes = plt.axes()
+axes.grid()
 X_grid = np.arange(min(X), max(X), 0.1)
 X_grid = X_grid.reshape((len(X_grid), 1))
 plt.scatter(X, y, color = 'red')
@@ -199,6 +203,8 @@ regressor.fit(X, y)
 
 """## Model Plot"""
 
+axes = plt.axes()
+axes.grid()
 X_grid = np.arange(min(X), max(X), 0.1)
 X_grid = X_grid.reshape(len(X_grid), 1);
 plt.scatter(X, y, color='red')
@@ -220,6 +226,8 @@ regressor.fit(X, y)
 
 """## Model Plot"""
 
+axes = plt.axes()
+axes.grid()
 X_grid = np.arange(min(X), max(X), 0.1)
 X_grid = X_grid.reshape(len(X_grid), 1);
 plt.scatter(X, y, color='red')

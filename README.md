@@ -85,7 +85,7 @@ regressor.fit(X, y)
 ```
 
 ## Plots
-[![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)
+[![svm.png](https://i.postimg.cc/wMSyyyJn/svm.png)](https://postimg.cc/7JnYjLKN)
 
 ## R2 Score
 ```python
@@ -112,7 +112,7 @@ lin_reg4.fit(X_poly4, y)
 ```
 
 ## Plots
-[![polyyyyy.png](https://i.postimg.cc/vTmKP1JD/polyyyyy.png)](https://postimg.cc/R6jGh0Vz)
+[![POOOOOOOOOOOOOOOO.png](https://i.postimg.cc/KvwwjZWL/POOOOOOOOOOOOOOOO.png)](https://postimg.cc/Vd9DHcmL)
 
 ## R2 Score
 ```python
@@ -140,7 +140,7 @@ regressor.fit(X, y)
 ```
 
 ## Plots
-[![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)
+[![DECISIONnnn.png](https://i.postimg.cc/ZqBrRS19/DECISIONnnn.png)](https://postimg.cc/WDVDWQpj)
 
 ## R2 Score
 ```python
@@ -157,7 +157,7 @@ regressor.fit(X, y)
 ```
 
 ## Plots
-[![rnadom.png](https://i.postimg.cc/qBnQTxL0/rnadom.png)](https://postimg.cc/w3qD5JZb)
+[![RAAANDOM.png](https://i.postimg.cc/7YK7nh4G/RAAANDOM.png)](https://postimg.cc/fJ0JwwJD)
 
 ## R2 Score
 ```python
@@ -170,8 +170,10 @@ r2 = 0.9302612028627444
 |    | Linear | Polynomial | SVM | Decision Tree | Random Forest |
 |-------|---------|------------|-----|---------------|---------------|
 |r2score|0.84|0.70|0.69|X|0.93|
-|model|[![skl1.png](https://i.postimg.cc/N0xs8pP7/skl1.png)](https://postimg.cc/JyGCMc8G)|[![polyyyyy.png](https://i.postimg.cc/vTmKP1JD/polyyyyy.png)](https://postimg.cc/R6jGh0Vz)|[![svm.png](https://i.postimg.cc/fL8dw11J/svm.png)](https://postimg.cc/WFJz8YNv)|[![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)|[![rnadom.png](https://i.postimg.cc/qBnQTxL0/rnadom.png)](https://postimg.cc/w3qD5JZb)|
+|model|[![skl1.png](https://i.postimg.cc/N0xs8pP7/skl1.png)](https://postimg.cc/JyGCMc8G)|[![POOOOOOOOOOOOOOOO.png](https://i.postimg.cc/KvwwjZWL/POOOOOOOOOOOOOOOO.png)](https://postimg.cc/Vd9DHcmL)|[![svm.png](https://i.postimg.cc/wMSyyyJn/svm.png)](https://postimg.cc/7JnYjLKN)|[![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)|[![RAAANDOM.png](https://i.postimg.cc/7YK7nh4G/RAAANDOM.png)](https://postimg.cc/fJ0JwwJD)|
 
 I found r2=1 for the decision tree algorithm, so I preferred not to take it into account.
 
-The best model is the <b>random forest algorithm</b>, it has <b>0.93</b> of precision.
+The most acurate model is the <b>random forest algorithm</b>one, it has <b>93%</b> of precision.<br>
+
+[![RAAANDOM.png](https://i.postimg.cc/7YK7nh4G/RAAANDOM.png)](https://postimg.cc/fJ0JwwJD)
