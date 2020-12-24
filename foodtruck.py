@@ -15,6 +15,7 @@ You want to use this data to help you choose the city to open a new point of sal
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score
 
 dataset = pd.read_csv('univariate_linear_regression_dataset.csv')
 X = dataset.iloc[:, 0].values
@@ -22,221 +23,286 @@ y = dataset.iloc[:, -1].values
 
 dataset
 
-axes = plt.axes()
-axes.grid()
-plt.title("Representation")
-plt.scatter(X, y)
-plt.xlabel("Population (10k)")
-plt.ylabel("Profit (10k)")
-plt.show()
+# axes = plt.axes()
+# axes.grid()
+# plt.title("Representation")
+# plt.scatter(X, y)
+# plt.xlabel("Population (10k)")
+# plt.ylabel("Profit (10k)")
+# plt.show()
 
-"""# Linear Regression Model
+"""# Linear Regression Model"""
 
-## Scipy Regression
-"""
+def linearRegression(X, y):
+  # Scipy Regression
+  from scipy import stats
+  slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
+  def predict(X):
+    return slope * X + intercept
+  axes = plt.axes()
+  axes.grid()
+  plt.title(" Scipy Predictions")
+  plt.plot(X, predict(X), c='r')
+  plt.scatter(X, y, c='b')
+  plt.xlabel('Population (10k)')
+  plt.ylabel('Profit (10k)')
+  plt.xlim((4.5, 22.5))
+  plt.ylim((-5, 25))
+  plt.show()
+  # Scikit Learn Regression
+  from sklearn.model_selection import train_test_split
+  X = X.reshape(X.shape[0], 1)
+  y = y.reshape(y.shape[0], 1)
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+  from sklearn.linear_model import LinearRegression
+  regressor = LinearRegression()
+  regressor.fit(X_train, y_train)
+  y_pred = regressor.predict(X_test)
+  axes = plt.axes()
+  axes.grid()
+  plt.scatter(X_train, y_train, color='blue')
+  plt.plot(X_train, regressor.predict(X_train), color='red')
+  plt.title("SKL Regression - Train set")
+  plt.xlabel("Population (10k)")
+  plt.ylabel('Profit (10k)')
+  plt.show()
+  axes = plt.axes()
+  axes.grid()
+  plt.scatter(X_test, y_test, color='blue')
+  plt.plot(X_test, y_pred, color='red')
+  plt.title("SKL Regression - Test set")
+  plt.xlabel("Population (10k)")
+  plt.ylabel('Profit (10k)')
+  plt.show()
+  # compare scipy and sklearn
+  axes = plt.axes()
+  axes.grid()
+  plt.title('Scipy vs Sklearn results')
+  plt.plot(X_test, y_pred, c='b', label="sklearn")
+  plt.plot(X_test, predict(X_test), c='r', label="scipy")
+  plt.xlabel("Population (10k)")
+  plt.ylabel('Profit (10k)')
+  plt.legend(loc="lower right")
+  plt.show()
+  # r2 scores
+  print("Scipy: "+str(r_value))
+  print("SKLearn: "+str(r2_score(y_train, regressor.predict(X_train))))
+  # random predictions
+  angers = np.array([15])
+  angers = angers.reshape(angers.shape[0], 1)
+  print("150K (Angers)")
+  print("Scipy: ["+str(predict(15))+"]")
+  print("SkLearn: "+str(regressor.predict(angers).reshape(1,)))
+  print("Delta = "+str(np.abs(predict(15)-regressor.predict(angers).reshape(1,))))
+  rennes = np.array([21])
+  rennes = rennes.reshape(rennes.shape[0], 1)
+  print("215K (Rennes)")
+  print("Scipy: ["+str(predict(21))+"]")
+  print("SkLearn: "+str(regressor.predict(rennes).reshape(1,)))
+  print("Delta = "+str(np.abs(predict(21)-regressor.predict(rennes).reshape(1,))))
 
-from scipy import stats
-slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
-
-def predict(X):
-  return slope * X + intercept
-
-axes = plt.axes()
-axes.grid()
-plt.title(" Scipy Predictions")
-plt.plot(X, predict(X), c='r')
-plt.scatter(X, y, c='b')
-plt.xlabel('Population (10k)')
-plt.ylabel('Profit (10k)')
-plt.xlim((4.5, 22.5))
-plt.ylim((-5, 25))
-plt.show()
-
-"""## Scikit Learn Regression"""
-
-from sklearn.model_selection import train_test_split
-X = X.reshape(X.shape[0], 1)
-y = y.reshape(y.shape[0], 1)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-from sklearn.linear_model import LinearRegression
-regressor = LinearRegression()
-regressor.fit(X_train, y_train)
-
-y_pred = regressor.predict(X_test)
-
-axes = plt.axes()
-axes.grid()
-plt.scatter(X_train, y_train, color='blue')
-plt.plot(X_train, regressor.predict(X_train), color='red')
-plt.title("SKL Regression - Train set")
-plt.xlabel("Population (10k)")
-plt.ylabel('Profit (10k)')
-plt.show()
-
-axes = plt.axes()
-axes.grid()
-plt.scatter(X_test, y_test, color='blue')
-plt.plot(X_test, y_pred, color='red')
-plt.title("SKL Regression - Test set")
-plt.xlabel("Population (10k)")
-plt.ylabel('Profit (10k)')
-plt.show()
-
-"""## Compare Scipy and SKLearn
-
-### R2 Scores Plots
-"""
-
-axes = plt.axes()
-axes.grid()
-plt.title('Scipy vs Sklearn results')
-plt.plot(X_test, y_pred, c='b', label="sklearn")
-plt.plot(X_test, predict(X_test), c='r', label="scipy")
-plt.xlabel("Population (10k)")
-plt.ylabel('Profit (10k)')
-plt.legend(loc="lower right")
-plt.show()
-
-"""### R2 Scores"""
-
-from sklearn.metrics import r2_score
-print("Scipy: "+str(r_value))
-print("SKLearn: "+str(r2_score(y_train, regressor.predict(X_train))))
-
-"""### Random Predictions"""
-
-angers = np.array([15])
-angers = angers.reshape(angers.shape[0], 1)
-print("150K (Angers)")
-print("Scipy: ["+str(predict(15))+"]")
-print("SkLearn: "+str(regressor.predict(angers).reshape(1,)))
-print("Delta = "+str(np.abs(predict(15)-regressor.predict(angers).reshape(1,))))
-
-rennes = np.array([21])
-rennes = rennes.reshape(rennes.shape[0], 1)
-print("215K (Rennes)")
-print("Scipy: ["+str(predict(21))+"]")
-print("SkLearn: "+str(regressor.predict(rennes).reshape(1,)))
-print("Delta = "+str(np.abs(predict(21)-regressor.predict(rennes).reshape(1,))))
+# linearRegression(X, y)
 
 """# Support Vector Machine Model"""
 
-from sklearn.preprocessing import StandardScaler
-sc_X = StandardScaler()
-sc_y = StandardScaler()
-X = sc_X.fit_transform(X)
-y = sc_y.fit_transform(y)
+def supportVectorMachine(X, y):
+  from sklearn.preprocessing import StandardScaler
+  sc_X = StandardScaler()
+  sc_y = StandardScaler()
+  X = X.reshape(X.shape[0], 1)
+  y = y.reshape(y.shape[0], 1)
+  X = sc_X.fit_transform(X)
+  y = sc_y.fit_transform(y)
+  from sklearn.svm import SVR
+  regressor = SVR(kernel="rbf")
+  regressor.fit(X, y)
+  axes = plt.axes()
+  axes.grid()
+  X_grid = np.arange(min(sc_X.inverse_transform(X)), max(sc_X.inverse_transform(X)), 0.1)
+  X_grid = X_grid.reshape((len(X_grid), 1))
+  plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
+  plt.plot(X_grid, sc_y.inverse_transform(regressor.predict(sc_X.transform(X_grid))), color = 'blue')
+  plt.title('SVM Model')
+  plt.xlabel('Population (10k)')
+  plt.ylabel('Profit (10k)')
+  plt.show()
+  print('150K (Angers)')
+  print("Predict: "+str(sc_y.inverse_transform(regressor.predict(sc_X.transform([[15]])))))
+  print('215K (Rennes)')
+  print("Predict: "+str(sc_y.inverse_transform(regressor.predict(sc_X.transform([[21]])))))
+  print(r2_score(sc_y.inverse_transform(y), sc_y.inverse_transform(regressor.predict(sc_X.transform(sc_X.inverse_transform(X))))))
 
-from sklearn.svm import SVR
-regressor = SVR(kernel="rbf")
-regressor.fit(X, y)
-
-"""## Model Plot"""
-
-axes = plt.axes()
-axes.grid()
-X_grid = np.arange(min(sc_X.inverse_transform(X)), max(sc_X.inverse_transform(X)), 0.1)
-X_grid = X_grid.reshape((len(X_grid), 1))
-plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
-plt.plot(X_grid, sc_y.inverse_transform(regressor.predict(sc_X.transform(X_grid))), color = 'blue')
-plt.title('SVM Model')
-plt.xlabel('Population (10k)')
-plt.ylabel('Profit (10k)')
-plt.show()
-
-"""## Random Predictions"""
-
-print('150K (Angers)')
-print("Predict: "+str(sc_y.inverse_transform(regressor.predict(sc_X.transform([[15]])))))
-
-print('215K (Rennes)')
-print("Predict: "+str(sc_y.inverse_transform(regressor.predict(sc_X.transform([[21]])))))
-
-"""## R2 Score"""
-
-print(r2_score(sc_y.inverse_transform(y), sc_y.inverse_transform(regressor.predict(sc_X.transform(sc_X.inverse_transform(X))))))
+# supportVectorMachine(X, y)
 
 """# Polynomial Regression Model"""
 
-lin_reg = LinearRegression()
-lin_reg.fit(X, y)
+def polynomialRegression(X, y):
+  X = X.reshape(X.shape[0], 1)
+  y = y.reshape(y.shape[0], 1)
+  lin_reg = LinearRegression()
+  lin_reg.fit(X, y)
+  from sklearn.preprocessing import PolynomialFeatures
+  poly_reg4 = PolynomialFeatures(degree=4)
+  X_poly4 = poly_reg4.fit_transform(X)
+  lin_reg4 = LinearRegression()
+  lin_reg4.fit(X_poly4, y)
+  axes = plt.axes()
+  axes.grid()
+  X_val = np.arange(min(X), max(X), 0.01)
+  X_val = X_val.reshape((len(X_val), 1))
+  plt.scatter(X, y, color = 'red')
+  plt.plot(X_val, lin_reg4.predict(poly_reg4.fit_transform(X_val)), color = 'blue')
+  plt.title('Polynomial Regression | degree=4')
+  plt.xlabel('Population (10k)')
+  plt.ylabel('Profit (10k)')
+  plt.show()
+  print('150K (Angers)')
+  print("Predict lin: "+str(lin_reg.predict([[15]])))
+  print("Predict poly: "+str(poly_reg4.fit_transform([[15]])))
+  print('215K (Rennes)')
+  print("Predict lin: "+str(lin_reg.predict([[21]])))
+  print("Predict poly: "+str(poly_reg4.fit_transform([[21]])))
+  print(r2_score(y, lin_reg.predict(X)))
 
-from sklearn.preprocessing import PolynomialFeatures
-poly_reg4 = PolynomialFeatures(degree=4)
-X_poly4 = poly_reg4.fit_transform(X)
-lin_reg4 = LinearRegression()
-lin_reg4.fit(X_poly4, y)
+# polynomialRegression(X, y)
 
-"""## Model plot"""
+"""# Decision Tree Regression - Most Accurate"""
 
-axes = plt.axes()
-axes.grid()
-X_grid = np.arange(min(X), max(X), 0.1)
-X_grid = X_grid.reshape((len(X_grid), 1))
-plt.scatter(X, y, color = 'red')
-plt.plot(X_grid, lin_reg4.predict(poly_reg4.fit_transform(X_grid)), color = 'blue')
-plt.title('Polynomial Regression | degree=4')
-plt.xlabel('Population (10k)')
-plt.ylabel('Profit (10k)')
-plt.show()
+def decisionTreeRegression(X, y):
+  global DTR 
+  from sklearn.tree import DecisionTreeRegressor
+  DTR = DecisionTreeRegressor(random_state=0)
+  X = X.reshape(X.shape[0], 1)
+  y = y.reshape(y.shape[0], 1)
+  DTR.fit(X, y)
+  axes = plt.axes()
+  axes.grid()
+  # X_grid = np.arange(min(X), max(X), 0.1)
+  # X_grid = X_grid.reshape(len(X_grid), 1)
+  X_val = np.arange(min(X), max(X), 0.01)
+  X_val = X_val.reshape((len(X_val), 1))
+  plt.scatter(X, y, color='red')
+  plt.plot(X_val, DTR.predict(X_val), color='blue')
+  plt.title('Decision Tree Model')
+  plt.xlabel('Population (10k)')
+  plt.ylabel('Profit (10k)')
+  plt.show()
+  # print(r2_score(y, DTR.predict(X)))
 
-"""## Random Predictions"""
-
-print('150K (Angers)')
-print("Predict lin: "+str(lin_reg.predict([[15]])))
-print("Predict poly: "+str(poly_reg4.fit_transform([[15]])))
-
-print('215K (Rennes)')
-print("Predict lin: "+str(lin_reg.predict([[21]])))
-print("Predict poly: "+str(poly_reg4.fit_transform([[21]])))
-
-"""## R2 Score"""
-
-print(r2_score(y, lin_reg.predict(X)))
-
-"""# Decision Tree Regression"""
-
-from sklearn.tree import DecisionTreeRegressor
-regressor = DecisionTreeRegressor(random_state=0)
-regressor.fit(X, y)
-
-"""## Model Plot"""
-
-axes = plt.axes()
-axes.grid()
-X_grid = np.arange(min(X), max(X), 0.1)
-X_grid = X_grid.reshape(len(X_grid), 1);
-plt.scatter(X, y, color='red')
-plt.plot(X_grid, regressor.predict(X_grid), color='blue')
-plt.title('Decision Tree Model')
-plt.xlabel('Population (10k)')
-plt.ylabel('Profit (10k)')
-plt.show()
-
-"""## R2 Score"""
-
-print(r2_score(y, regressor.predict(X)))
+decisionTreeRegression(X, y)
 
 """# Random Forest Regression"""
 
-from sklearn.ensemble import RandomForestRegressor
-regressor = RandomForestRegressor(n_estimators=10, random_state=0)
-regressor.fit(X, y)
+def randomForestRegression(X, y):
+  from sklearn.ensemble import RandomForestRegressor
+  nbEstimators = 500
+  RFG = RandomForestRegressor(n_estimators=nbEstimators, random_state=0)
+  X = X.reshape(X.shape[0], 1)
+  y = y.reshape(y.shape[0], 1)
+  RFG.fit(X, y)
+  axes = plt.axes()
+  axes.grid()
+  X_val = np.arange(min(X), max(X), 0.01)
+  X_val = X_val.reshape((len(X_val), 1))
+  plt.scatter(X, y, color="red")
+  plt.plot(X_val, RFG.predict(X_val), color="blue")
+  plt.title(f'Random Forest | n_estimators={nbEstimators}')
+  plt.xlabel('Population (10k)')
+  plt.ylabel('Profit (10k)')
+  plt.show()
+  print(r2_score(y, RFG.predict(X)))
 
-"""## Model Plot"""
+# randomForestRegression(X, y)
 
-axes = plt.axes()
-axes.grid()
-X_grid = np.arange(min(X), max(X), 0.1)
-X_grid = X_grid.reshape(len(X_grid), 1);
-plt.scatter(X, y, color='red')
-plt.plot(X_grid, regressor.predict(X_grid), color='blue')
-plt.title('Random Forest | n_estimators=10')
-plt.xlabel('Population (10k)')
-plt.ylabel('Profit (10k)')
-plt.show()
+"""# Scraping
 
-"""## R2 Score"""
+## Intro
+"""
 
-print(r2_score(y, regressor.predict(X)))
+import requests
+
+response = requests.get("https://fr.wikipedia.org/wiki/Liste_des_communes_de_France_les_plus_peupl%C3%A9es")
+content = response.content
+# print(content)
+
+"""## Get elements from web page"""
+
+from bs4 import BeautifulSoup
+
+parser = BeautifulSoup(content, 'html.parser')
+body = parser.body
+tbody = body.tbody
+# print(tbody)
+
+trs = tbody.find_all('tr')
+# print(trs)
+
+# Paris row: trs[2]
+tdsC = trs[-1].text
+# print(tdsC.split("\n"))
+
+"""## Get cities and corresponding populations"""
+
+cities, population = [], []
+for i in range(2, 277):
+  cities.append(trs[i].text.split('\n')[3])
+  if i==173:
+    population.append(trs[i].text.split('\n')[9])
+  else:
+    population.append(trs[i].text.split("\n")[8])
+# print(cities)
+# print(population)
+
+# clear lists
+if(len(cities)==len(population)):
+  for i in range(len(cities)):
+    if("[" in cities[i]):
+      cities[i] = (cities[i])[0:-4]
+    if("(" in population[i]):
+      population[i] = (population[i])[0:-7]
+# print(cities)
+# print(population)
+
+zip_iterator = zip(cities, population)
+final_dict = dict(zip_iterator)
+# print(final_dict)
+
+"""## Predict"""
+
+"""# Interface"""
+
+# only on foodtruck.py
+from tkinter import *
+
+def predictResult():
+  city = cityEntry.get()
+  cityEntry.delete(0, END)
+  if(city in final_dict.keys()):
+    desiredPop = final_dict[city]
+    splittedPop = desiredPop.split()
+    if(len(splittedPop)==3):
+      intPop = int(str(int(splittedPop[0]))+str(int(splittedPop[1]))+str(int(splittedPop[2])))
+    else:
+      intPop = int(str(int(splittedPop[0]))+str(int(splittedPop[1])))
+    convIntPop = intPop/10000
+    prediction = DTR.predict([[convIntPop]])
+    prediction = float(str(prediction)[1:-1])
+    prediction*=10000
+    prediction = round(prediction, 2)
+    textLabel=f"Prediction: \n{city} -> {prediction}$"
+  else:
+    textLabel="Unknown city..."
+  resultLabel = Label(gui, text=textLabel)
+  resultLabel.pack()
+
+gui = Tk(className='Food Truck Project')
+gui.geometry("200x200")
+label = Label(gui, text="Profit Predictor")
+cityEntry = Entry(gui, width=20)
+validBtn = Button(gui, text="Valid", command=predictResult)
+
+label.pack()
+cityEntry.pack()
+validBtn.pack()
+
+gui.mainloop()

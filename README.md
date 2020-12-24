@@ -20,6 +20,8 @@
 - [Random Forests Model](#random-forests-model)
   - [Plots](#plots-3)
   - [R2 Score](#r2-score-3)
+- [Web Scraping](#web-scraping)
+- [Graphical User Interface (GUI - Tkinter)](#graphical-user-interface-gui---tkinter)
 - [Conclusion](#conclusion)
 
 ## Problem
@@ -140,13 +142,13 @@ regressor.fit(X, y)
 ```
 
 ## Plots
-[![DECISIONnnn.png](https://i.postimg.cc/ZqBrRS19/DECISIONnnn.png)](https://postimg.cc/WDVDWQpj)
+[![DECISIONTOOOOOOP.png](https://i.postimg.cc/053Wcswc/DECISIONTOOOOOOP.png)](https://postimg.cc/mhYygKVH)
 
 ## R2 Score
 ```python
 print(r2_score(y, regressor.predict(X)))
 ===========================================
-r2 = 1 # ??
+r2 = 1
 ```
 
 # Random Forests Model
@@ -157,8 +159,7 @@ regressor.fit(X, y)
 ```
 
 ## Plots
-[![RAAANDOM.png](https://i.postimg.cc/7YK7nh4G/RAAANDOM.png)](https://postimg.cc/fJ0JwwJD)
-
+[![RANDOMTOOOOOOOP.png](https://i.postimg.cc/kgjfRPqQ/RANDOMTOOOOOOOP.png)](https://postimg.cc/gxZv15wj)
 ## R2 Score
 ```python
 print(r2_score(y, regressor.predict(X)))
@@ -166,14 +167,60 @@ print(r2_score(y, regressor.predict(X)))
 r2 = 0.9302612028627444
 ```
 
+# Web Scraping
+I scraped this [Wikipedia page](https://fr.wikipedia.org/wiki/Liste_des_communes_de_France_les_plus_peupl%C3%A9es) to get all cities with more than 30k people.
+```python
+response = requests.get("https://fr.wikipedia.org/wiki/Liste_des_communes_de_France_les_plus_peupl%C3%A9es")
+content = response.content
+```
+```python
+cities = []
+for i in range(2, 277):
+  cities.append(trs[i].text.split("\n")[3])
+population = []
+for i in range(2, 277):
+  if(i==173):
+    population.append(trs[i].text.split("\n")[9])
+  else:
+    population.append(trs[i].text.split("\n")[8])
+```
+```python
+zip_iterator = zip(cities, population)
+final_dict = dict(zip_iterator)
+```
+Now we just have to ask a city to the user, the algorithm will check if the city is included on the dictionnary keys. If it is the case, I get the correponding population to predict the profit by the Decision Tree Regressor.<br>
+```python
+prediction = DTR.predict([[convIntPop]])
+prediction = float(str(prediction)[1:-1])
+prediction*=10000
+print("Prediction Decision Tree: "+str(desiredCity)+" -> "+str(prediction)+"$")
+```
+
+# Graphical User Interface (GUI - Tkinter)
+To improve the user experience, I created a simple GUI with Tkinter.
+The CEO can easily enter a City and note the predicted profit given by the machine learning model.<br>
+```python
+gui = Tk(className='Food Truck Project')
+gui.geometry("200x200")
+label = Label(gui, text="Profit Predictor")
+cityEntry = Entry(gui, width=20)
+validBtn = Button(gui, text="Valid", command=predictResult)
+```
+As you can see with this code, I made a very simple GUI to display predictions.<br>
+The final result is printed in a label:<br>
+```python
+textLabel=f"Prediction: \n{city} -> {prediction}$"
+```
+[![food.png](https://i.postimg.cc/tCfzfpJS/food.png)](https://postimg.cc/BXTDPWxH)
+
+
 # Conclusion
 |    | Linear | Polynomial | SVM | Decision Tree | Random Forest |
 |-------|---------|------------|-----|---------------|---------------|
-|r2score|0.84|0.70|0.69|X|0.93|
-|model|[![skl1.png](https://i.postimg.cc/N0xs8pP7/skl1.png)](https://postimg.cc/JyGCMc8G)|[![POOOOOOOOOOOOOOOO.png](https://i.postimg.cc/KvwwjZWL/POOOOOOOOOOOOOOOO.png)](https://postimg.cc/Vd9DHcmL)|[![svm.png](https://i.postimg.cc/wMSyyyJn/svm.png)](https://postimg.cc/7JnYjLKN)|[![decision.png](https://i.postimg.cc/0jdpJZWw/decision.png)](https://postimg.cc/ctCKp7Nx)|[![RAAANDOM.png](https://i.postimg.cc/7YK7nh4G/RAAANDOM.png)](https://postimg.cc/fJ0JwwJD)|
+|r2score|0.84|0.70|0.69|1|0.93|
+|model|[![skl1.png](https://i.postimg.cc/N0xs8pP7/skl1.png)](https://postimg.cc/JyGCMc8G)|[![POOOOOOOOOOOOOOOO.png](https://i.postimg.cc/KvwwjZWL/POOOOOOOOOOOOOOOO.png)](https://postimg.cc/Vd9DHcmL)|[![svm.png](https://i.postimg.cc/wMSyyyJn/svm.png)](https://postimg.cc/7JnYjLKN)|[![DECISIONTOOOOOOP.png](https://i.postimg.cc/053Wcswc/DECISIONTOOOOOOP.png)](https://postimg.cc/mhYygKVH)|[![RANDOMTOOOOOOOP.png](https://i.postimg.cc/kgjfRPqQ/RANDOMTOOOOOOOP.png)](https://postimg.cc/gxZv15wj)|
 
-I found r2=1 for the decision tree algorithm, so I preferred not to take it into account.
 
-The most acurate model is the <b>random forest algorithm</b>one, it has <b>93%</b> of precision.<br>
+The most acurate model is the <b>Decision Tree</b> one, it has <b>100%</b> of precision (strange ?).<br>
 
-[![RAAANDOM.png](https://i.postimg.cc/7YK7nh4G/RAAANDOM.png)](https://postimg.cc/fJ0JwwJD)
+[![DECISIONTOOOOOOP.png](https://i.postimg.cc/053Wcswc/DECISIONTOOOOOOP.png)](https://postimg.cc/mhYygKVH)
